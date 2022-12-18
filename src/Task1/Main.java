@@ -1,6 +1,8 @@
-import java.util.Scanner;
+package Task1;
 
-public class Task1 {
+import java.util.*;
+
+public class Main {
 
     /*
      * 1. Реализовать консольное приложение, которое:
@@ -17,20 +19,50 @@ public class Task1 {
      */
 
     public static void main(String[] args) {
-        Task1 t1 = new Task1();
-        Methods1 methods1 = new Methods1();
+        TextsMethods textMethods = new TextsMethods();
+        Methods methods = new Methods();
         Scanner sc = new Scanner(System.in);
-
-        methods1.greeteng();
-        methods1.help();
-
-
         String str;
-//        do {
-//            t1.mainMenu();
-//        } while (!str.equals("quit"));
+        LinkedList<String> arrayList = new LinkedList<>();
+        textMethods.greeteng();
+
+        do {
+            textMethods.mainMenu();
+            str = sc.nextLine();
+
+            if ("quit".equals(str)) {
+                System.out.println();
+                System.out.println("До встречи!");
+            } else if ("help".equals(str)) {
+                textMethods.help();
+            } else if ("print".equals(str)) {
+                methods.printList(arrayList);
+            } else if ("clear".equals(str)) {
+                methods.clearList(arrayList);
+            } else {
+                if (!str.contains("~")) {
+                    System.out.println("Запись введена в неверном формате, попробуйте еще!");
+                    System.out.println();
+                } else {
+                    List<String> tempList = Arrays.asList(str.split("~"));
+                    if (!methods.isInteger(tempList)) {
+                        System.out.println("Запись введена в неверном формате, после '~' должно стоять число");
+                        System.out.println();
+                    } else {
+                        int index = Integer.parseInt(tempList.get(1)) - 1;
+                        if (tempList.get(0).equals("print")) {
+                            methods.printListElement(arrayList, index);
+                        } else if (tempList.get(0).equals("remove")) {
+                            methods.removeListElement(arrayList, index);
+                        } else {
+                            methods.addElement(arrayList, index, tempList);
+                        }
+                    }
+                }
+            }
+        } while (!str.equals("quit"));
         sc.close();
+
+        textMethods.mySignature();
     }
-
-
 }
